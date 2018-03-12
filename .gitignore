@@ -1,0 +1,12 @@
+.idea/
+cmake-build-debug/
+out/
+obj/
+checker
+push_swap
+*.dev
+*.san
+*.a
+*.o
+*.d
+*.out
