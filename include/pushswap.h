@@ -15,4 +15,13 @@
 
 # include <libft.h>
 
+struct s_inode;
+
+typedef struct		s_inode
+{
+	struct s_inode	*prev;
+	struct s_inode	*next;
+	int				val;
+}					t_inode;
+
 #endif
