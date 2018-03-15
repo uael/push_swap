@@ -12,7 +12,7 @@
 
 #include <librl.h>
 
-#include "pushswap.h"
+#include "checker.h"
 
 #define ERR_MSG "Error\n"
 
@@ -69,94 +69,99 @@ static void			complete(t_sds *cmd)
 	(void)cmd;
 }
 
-int					main(int ac, char *av[])
+static int			ck_exit(t_checker *ck, int ecode)
+{
+	if (ecode)
+		ft_fprintf(g_stderr, ERR_MSG);
+	rl_finalize(ck->fd);
+	if (ck->tty)
+		rl_histsave(".pushswapst");
+	if (ck->fd != STDIN_FILENO)
+		close(ck->fd);
+	rl_dtor();
+	if (ck->nodes)
+		free(ck->nodes);
+	exit(ecode);
+}
+
+static void			ck_init(t_checker *ck, int ac, char *av[])
 {
 	int		len;
-	t_inode	*nodes;
-	t_lst	a;
-	t_lst	b;
-	int		tty;
 	int		opt;
-	char	*ln;
 	char	*filename;
-	int		fd;
+
+	g_optind = 1;
+	filename = NULL;
+	ft_bzero(ck, sizeof(t_checker));
+	while ((opt = ft_getopt(ac, av, "0123456789f:")) != WUT)
+		if (opt == 'f')
+			filename = g_optarg;
+		else if (ft_isdigit(*(av[g_optind] + 1)))
+			break ;
+		else
+			ck_exit(ck, EXIT_FAILURE);
+	if (filename && (ck->fd = open(filename, O_RDONLY, S_IRGRP | S_IRUSR)) < 0)
+		exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
+	if (!(len = ac - g_optind))
+		ck_exit(ck, EXIT_FAILURE);
+	if ((ck->tty = isatty(ck->fd)))
+	{
+		rl_histload(".pushswapst");
+		rl_complete(complete);
+	}
+	ck->nodes = ft_calloc(len * sizeof(t_inode));
+}
+
+int					main(int ac, char *av[])
+{
+	t_checker	ck;
+	char		*op;
 
 	if (ac < 2)
 		return (EXIT_FAILURE);
-	fd = STDIN_FILENO;
-	filename = NULL;
-	g_optind = 1;
-	while ((opt = ft_getopt(ac, av, "f:")) != WUT)
-		if (opt == 'f')
-			filename = g_optarg;
-		else
-			exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
-	if (filename && (fd = open(filename, O_RDONLY, S_IRGRP | S_IRUSR)) < 0)
-		exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
-	if ((tty = isatty(fd)))
+	ck_init(&ck, ac, av);
+	ft_lstctor(&ck.a);
+	ft_lstctor(&ck.b);
+	makea(av + g_optind, ck.nodes, &ck.a);
+	while (!rl_getline(ck.fd, "checker \033[36m❯\033[0m ", &op))
 	{
-		if (rl_histload(".pushswapst") < 0)
-		{
-			ft_fputs(g_stderr, "The history file `.pushswapst' is corrupted\n");
-			exit(1);
-		}
-		rl_complete(complete);
-	}
-	if (!(len = ac - g_optind))
-		exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
-	nodes = ft_calloc(len * sizeof(t_inode));
-	ft_lstctor(&a);
-	ft_lstctor(&b);
-	makea(av + g_optind, nodes, &a);
-	while (!rl_getline(fd, "checker \033[36m❯\033[0m ", &ln))
-	{
-		if (!ft_strcmp("sa\n", ln))
-			ps_operate(&a, &b, OP_S, LST_A);
-		else if (!ft_strcmp("sb\n", ln))
-			ps_operate(&a, &b, OP_S, LST_B);
-		else if (!ft_strcmp("ss\n", ln))
-			ps_operate(&a, &b, OP_S, LST_A | LST_B);
-		else if (!ft_strcmp("pa\n", ln))
-			ps_operate(&a, &b, OP_P, LST_A);
-		else if (!ft_strcmp("pb\n", ln))
-			ps_operate(&a, &b, OP_P, LST_B);
-		else if (!ft_strcmp("ra\n", ln))
-			ps_operate(&a, &b, OP_R, LST_A);
-		else if (!ft_strcmp("rb\n", ln))
-			ps_operate(&a, &b, OP_R, LST_B);
-		else if (!ft_strcmp("rr\n", ln))
-			ps_operate(&a, &b, OP_R, LST_A | LST_B);
-		else if (!ft_strcmp("rra\n", ln))
-			ps_operate(&a, &b, OP_RR, LST_A);
-		else if (!ft_strcmp("rrb\n", ln))
-			ps_operate(&a, &b, OP_RR, LST_B);
-		else if (!ft_strcmp("rrr\n", ln))
-			ps_operate(&a, &b, OP_RR, LST_A | LST_B);
-		else if (!ft_strcmp("dumpa\n", ln))
-			ps_dump(g_stdout, &a);
-		else if (!ft_strcmp("dumpb\n", ln))
-			ps_dump(g_stdout, &b);
-		else if (tty)
+		if (!ft_strcmp("sa\n", op))
+			ps_operate(&ck.a, &ck.b, OP_S, LST_A);
+		else if (!ft_strcmp("sb\n", op))
+			ps_operate(&ck.a, &ck.b, OP_S, LST_B);
+		else if (!ft_strcmp("ss\n", op))
+			ps_operate(&ck.a, &ck.b, OP_S, LST_A | LST_B);
+		else if (!ft_strcmp("pa\n", op))
+			ps_operate(&ck.a, &ck.b, OP_P, LST_A);
+		else if (!ft_strcmp("pb\n", op))
+			ps_operate(&ck.a, &ck.b, OP_P, LST_B);
+		else if (!ft_strcmp("ra\n", op))
+			ps_operate(&ck.a, &ck.b, OP_R, LST_A);
+		else if (!ft_strcmp("rb\n", op))
+			ps_operate(&ck.a, &ck.b, OP_R, LST_B);
+		else if (!ft_strcmp("rr\n", op))
+			ps_operate(&ck.a, &ck.b, OP_R, LST_A | LST_B);
+		else if (!ft_strcmp("rra\n", op))
+			ps_operate(&ck.a, &ck.b, OP_RR, LST_A);
+		else if (!ft_strcmp("rrb\n", op))
+			ps_operate(&ck.a, &ck.b, OP_RR, LST_B);
+		else if (!ft_strcmp("rrr\n", op))
+			ps_operate(&ck.a, &ck.b, OP_RR, LST_A | LST_B);
+		else if (!ft_strcmp("dumpa\n", op))
+			ps_dump(g_stdout, &ck.a);
+		else if (!ft_strcmp("dumpb\n", op))
+			ps_dump(g_stdout, &ck.b);
+		else if (ck.tty)
 			ft_dprintf(STDERR_FILENO, "operation not found\n");
-		else if (*ln == '\n')
+		else if (*op == '\n')
 			break ;
 		else
 		{
-			ft_dprintf(STDERR_FILENO, "%s", ln);
+			ft_dprintf(STDERR_FILENO, "%s", op);
 			exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
 		}
 		ft_fflush(g_stdout);
 	}
-	rl_finalize(fd);
-	if (tty)
-		rl_histsave(".pushswapst");
-	if (b.len || !ps_issort(&a))
-		ft_fputs(g_stdout, "KO\n");
-	else
-		ft_fputs(g_stdout, "OK\n");
-	if (fd != STDIN_FILENO)
-		close(fd);
-	rl_dtor();
-	free(nodes);
-	return (EXIT_SUCCESS);
+	ft_fputs(g_stdout, ck.b.len || !ps_issort(&ck.a) ? "KO\n" : "OK\n");
+	return (ck_exit(&ck, EXIT_SUCCESS));
 }
