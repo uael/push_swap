@@ -1,23 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   str/mempcpy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2017/11/07 09:44:14 by alucas-           #+#    #+#             */
+/*   Updated: 2017/11/08 14:29:11 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "libft/str.h"
 
-inline int	ft_iscntrl(int c)
+inline size_t	ft_mempcpy(void *dst, void const *src, size_t n)
 {
-	return (c < 32 || c == 127);
-}
+	size_t			c;
+	uint8_t			*d;
+	uint8_t const	*s;
 
-inline int	ft_iscoolc(int c)
-{
-	return (ft_isspace(c) || ft_isprint(c));
+	c = 0;
+	d = (uint8_t *)dst;
+	s = (uint8_t const *)src;
+	while (n)
+	{
+		if (ft_isprint(*s))
+		{
+			*d++ = *s++;
+			++c;
+		}
+		else
+			++s;
+		--n;
+	}
+	return (c);
 }

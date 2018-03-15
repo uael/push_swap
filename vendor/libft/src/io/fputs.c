@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   io/fputs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2018/02/25 00:42:42 by alucas-           #+#    #+#             */
+/*   Updated: 2018/02/25 00:42:42 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "internal.h"
 
-inline int	ft_iscntrl(int c)
+int	ft_fputs(t_stream *f, char const *str)
 {
-	return (c < 32 || c == 127);
-}
+	size_t len;
 
-inline int	ft_iscoolc(int c)
-{
-	return (ft_isspace(c) || ft_isprint(c));
+	if (!str || !(len = ft_strlen(str)))
+		return (0);
+	if ((len = fwritex(f, (const uint8_t *)str, len)) > INT_MAX)
+		return (ft_error(WUT, EOVERFLOW));
+	return ((int)len);
 }

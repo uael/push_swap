@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   screen.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
+/*   Updated: 2017/12/06 12:00:10 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#ifndef LIBRL_SCREEN_H
+# define LIBRL_SCREEN_H
 
-inline int	ft_iscntrl(int c)
-{
-	return (c < 32 || c == 127);
-}
+# include "librl.h"
 
-inline int	ft_iscoolc(int c)
+# include <sys/ioctl.h>
+
+typedef struct	s_screen
 {
-	return (ft_isspace(c) || ft_isprint(c));
-}
+	uint16_t	height;
+	uint16_t	width;
+	uint16_t	row;
+	uint16_t	col;
+}				t_screen;
+
+extern t_screen	*g_screen;
+
+extern int		rl_screenpos(uint16_t *row, uint16_t *col);
+extern int		rl_screensize(uint16_t *row, uint16_t *col);
+extern int		rl_screenget(t_screen *self);
+
+#endif

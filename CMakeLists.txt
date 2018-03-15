@@ -4,6 +4,7 @@ cmake_policy(SET CMP0045 OLD)
 
 project(push_swap C)
 add_subdirectory(vendor/libft)
+add_subdirectory(vendor/librl)
 
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}
@@ -12,10 +13,12 @@ set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG}
   -fno-omit-frame-pointer -fsanitize=address")
 
 add_executable(checker include/pushswap.h
+  src/operate.c
+  src/verbose.c
   src/checker.c)
 set_property(TARGET checker PROPERTY C_STANDARD 90)
 target_include_directories(checker PUBLIC include)
-target_link_libraries(checker PUBLIC debug ft)
+target_link_libraries(checker PUBLIC debug ft debug rl)
 
 target_compile_definitions(checker
   PRIVATE $<$<CONFIG:Debug>:DEBUG>$<$<CONFIG:Release>:NDEBUG>)
@@ -31,6 +34,8 @@ else ()
 endif ()
 
 add_executable(push_swap include/pushswap.h
+  src/operate.c
+  src/verbose.c
   src/pushswap.c)
 set_property(TARGET push_swap PROPERTY C_STANDARD 90)
 target_include_directories(push_swap PUBLIC include)

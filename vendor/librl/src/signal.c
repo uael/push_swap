@@ -1,29 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft/cty.h                                        :+:      :+:    :+:   */
+/*   edit/ctrl.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/15 18:23:29 by null             ###   ########.fr       */
+/*   Updated: 2017/12/13 08:23:58 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_CTY_H
-# define LIBFT_CTY_H
+#include "edit.h"
+#include "visual.h"
+#include "read.h"
 
-extern int	ft_isalnum(int c);
-extern int	ft_isascii(int c);
-extern int	ft_isalpha(int c);
-extern int	ft_isdigit(int c);
-extern int	ft_islower(int c);
-extern int	ft_isprint(int c);
-extern int	ft_isupper(int c);
-extern int	ft_isspace(int c);
-extern int	ft_iscntrl(int c);
-extern int	ft_tolower(int c);
-extern int	ft_toupper(int c);
-extern int	ft_iscoolc(int c);
+inline int	rl_signalc(void)
+{
+	g_eln->idx = 0;
+	g_eln->str.len = 0;
+	*g_eln->str.buf = '\0';
+	ft_fputs(g_stdin, "^C\n");
+	ft_fflush(g_stdin);
+	return (RL_CLR);
+}
 
-#endif
+inline int	rl_signald(void)
+{
+	if (g_eln->str.len)
+	{
+		if (g_mode == RL_VISUAL)
+			return (rl_visualdelete());
+		return (YEP);
+	}
+	if (!g_edit_cat)
+	{
+		ft_sdsmpush(&g_eln->str, "exit", 4);
+		rl_editprint();
+	}
+	ft_fputc(g_stdin, '\n');
+	ft_fflush(g_stdin);
+	return (RL_EXIT);
+}

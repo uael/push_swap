@@ -81,14 +81,14 @@ size_t		fwritex(t_stream *f, uint8_t const *s, size_t l)
 	return (l + i);
 }
 
-size_t		ft_fwrite(t_stream *f, void const *src, size_t size, size_t nmemb)
+size_t		ft_fwrite(t_stream *f, void const *src, size_t isz, size_t n)
 {
 	size_t k;
 	size_t l;
 
-	l = size * nmemb;
-	if (!size)
-		nmemb = 0;
+	l = isz * n;
+	if (!isz)
+		n = 0;
 	k = fwritex(f, src, l);
-	return (k == l ? nmemb : k / size);
+	return (k == l ? n : k / isz);
 }

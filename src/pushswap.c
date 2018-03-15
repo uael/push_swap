@@ -15,18 +15,6 @@
 #define PS_VERBOSE (1 << 0)
 #define PS_COLOR (1 << 1)
 
-void	ps_lstdump(t_lst *lst)
-{
-	t_inode *node;
-
-	node = (t_inode *)lst->next;
-	while (node != (t_inode *)lst)
-	{
-		ft_printf("%d\n", node->val);
-		node = node->next;
-	}
-}
-
 int	main(int ac, char *av[])
 {
 	int		o;
@@ -58,7 +46,66 @@ int	main(int ac, char *av[])
 		++i;
 		++g_optind;
 	}
-	ps_lstdump(&a);
+
+	ft_fwrite(g_stdout, "--a--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &a);
+	ft_fwrite(g_stdout, "--b--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &b);
+	ft_fwrite(g_stdout, "-----\n", sizeof(char), 7);
+
+	ps_operate(&a, &b, OP_S, LST_A);
+
+	ft_fwrite(g_stdout, "--a--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &a);
+	ft_fwrite(g_stdout, "--b--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &b);
+	ft_fwrite(g_stdout, "-----\n", sizeof(char), 7);
+
+	ps_operate(&a, &b, OP_P, LST_B);
+	ps_operate(&a, &b, OP_P, LST_B);
+	ps_operate(&a, &b, OP_P, LST_B);
+
+	ft_fwrite(g_stdout, "--a--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &a);
+	ft_fwrite(g_stdout, "--b--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &b);
+	ft_fwrite(g_stdout, "-----\n", sizeof(char), 7);
+
+	ps_operate(&a, &b, OP_R, LST_A | LST_B);
+
+	ft_fwrite(g_stdout, "--a--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &a);
+	ft_fwrite(g_stdout, "--b--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &b);
+	ft_fwrite(g_stdout, "-----\n", sizeof(char), 7);
+
+	ps_operate(&a, &b, OP_RR, LST_A | LST_B);
+
+	ft_fwrite(g_stdout, "--a--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &a);
+	ft_fwrite(g_stdout, "--b--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &b);
+	ft_fwrite(g_stdout, "-----\n", sizeof(char), 7);
+
+	ps_operate(&a, &b, OP_S, LST_A);
+
+	ft_fwrite(g_stdout, "--a--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &a);
+	ft_fwrite(g_stdout, "--b--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &b);
+	ft_fwrite(g_stdout, "-----\n", sizeof(char), 7);
+
+	ps_operate(&a, &b, OP_P, LST_A);
+	ps_operate(&a, &b, OP_P, LST_A);
+	ps_operate(&a, &b, OP_P, LST_A);
+
+	ft_fwrite(g_stdout, "--a--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &a);
+	ft_fwrite(g_stdout, "--b--\n", sizeof(char), 7);
+	ps_dump(g_stdout, &b);
+	ft_fwrite(g_stdout, "-----\n", sizeof(char), 7);
+
 	free(nodes);
 	return (EXIT_SUCCESS);
 }
+

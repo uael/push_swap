@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   edit/return.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
+/*   Updated: 2017/12/13 08:23:58 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "../edit.h"
 
-inline int	ft_iscntrl(int c)
+inline int	rl_editreturn(void)
 {
-	return (c < 32 || c == 127);
-}
-
-inline int	ft_iscoolc(int c)
-{
-	return (ft_isspace(c) || ft_isprint(c));
+	if (!rl_histbi())
+		ft_fprintf(g_stdin, "\n%s\n", g_eln->str.buf);
+	else if (g_eln->idx != g_eln->str.len)
+	{
+		g_eln->idx = (uint16_t)g_eln->str.len;
+		rl_editprint();
+		ft_fputc(g_stdin, '\n');
+	}
+	else
+		ft_fputc(g_stdin, '\n');
+	ft_fflush(g_stdin);
+	ft_sdscpush(&g_eln->str, '\n');
+	return (NOP);
 }

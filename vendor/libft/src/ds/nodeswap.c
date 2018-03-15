@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   ds/nodeswap.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/07 09:53:34 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "libft/ds.h"
 
-inline int	ft_iscntrl(int c)
+t_node	*ft_nodenswp(t_node *node)
 {
-	return (c < 32 || c == 127);
-}
+	t_node *next;
 
-inline int	ft_iscoolc(int c)
-{
-	return (ft_isspace(c) || ft_isprint(c));
+	next = node->next;
+	node->next = next->next;
+	next->next = node;
+	next->prev = node->prev;
+	node->prev = next;
+	next->prev->next = next;
+	node->next->prev = node;
+	return (node);
 }

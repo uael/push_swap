@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
+/*   Updated: 2017/12/11 13:31:59 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "edit.h"
+#include "read.h"
 
-inline int	ft_iscntrl(int c)
+inline void		rl_hook(t_rlhook *hook)
 {
-	return (c < 32 || c == 127);
+	g_rlhook = hook;
 }
 
-inline int	ft_iscoolc(int c)
+inline void		rl_complete(t_rlcomp *comp)
 {
-	return (ft_isspace(c) || ft_isprint(c));
+	g_rlcomp = comp;
+}
+
+inline int		rl_reprint(void)
+{
+	if (g_mode == RL_INSERT)
+	{
+		rl_editprint();
+		return (YEP);
+	}
+	return (NOP);
 }

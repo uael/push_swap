@@ -22,13 +22,13 @@ OBJ_DIR ?= obj
 OBJ_PATH ?= $(OBJ_DIR)/rel
 3TH_PATH = vendor
 
-LIBS = ft
-LIB_NAME = ft
-3TH_NAME = libft
+LIBS = rl ft
+LIB_NAME = rl ft
+3TH_NAME = libft librl
 SRCA_NAME = \
-	checker.c
+	checker.c operate.c verbose.c
 SRCB_NAME = \
-	pushswap.c
+	pushswap.c operate.c verbose.c
 
 3TH = $(addprefix $(3TH_PATH)/, $(3TH_NAME))
 OBJA = $(addprefix $(OBJ_PATH)/, $(SRCA_NAME:.c=.o))

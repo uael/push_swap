@@ -13,6 +13,8 @@
 #ifndef LIBFT_EX_H
 # define LIBFT_EX_H
 
+# define DEBUG
+
 # ifdef DEBUG
 #  define FT_FUNC __FUNCTION__
 #  define FT_LINE __LINE__

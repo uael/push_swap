@@ -15,9 +15,21 @@
 
 # include <stdarg.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 # include "int.h"
 # include "str.h"
+# include "ex.h"
+
+# ifndef FT_PAGE_SIZE
+#  if defined PAGE_SIZE && PAGE_SIZE <= 4096
+#   define FT_PAGE_SIZE PAGE_SIZE
+#  elif defined PAGESIZE && PAGESIZE <= 4096
+#   define FT_PAGE_SIZE PAGESIZE
+#  else
+#   define FT_PAGE_SIZE 4096
+#  endif
+# endif
 
 struct s_stream;
 
@@ -41,10 +53,18 @@ typedef struct	s_stream
 	uint8_t		*wend;
 }				t_stream;
 
+extern t_stream	*g_stdin;
 extern t_stream	*g_stdout;
 extern t_stream	*g_stderr;
 
-extern size_t	ft_fwrite(t_stream *f, void const *src, size_t n, size_t isz);
+extern ssize_t	ft_read(int fd, void *buf, size_t sz);
+extern ssize_t	ft_write(int fd, void const *buf, size_t sz);
+
+extern t_stream	*ft_fopen(char const *filename, int flags, char *buf, size_t s);
+extern int		ft_fclose(t_stream *s);
+extern size_t	ft_fwrite(t_stream *f, void const *src, size_t isz, size_t n);
+extern int		ft_fputs(t_stream *f, char const *str);
+extern int		ft_fputc(t_stream *f, int ch);
 extern int		ft_fflush(t_stream *f);
 extern void		ft_fflushstd(void);
 
@@ -60,5 +80,25 @@ extern int		ft_vfprintf(t_stream *f, char const *fmt, va_list ap);
 extern int		ft_vprintf(char const *fmt, va_list ap);
 extern int		ft_vsnprintf(char *s, size_t n, char const *fmt, va_list ap);
 extern int		ft_vsprintf(char *s, char const *fmt, va_list ap);
+
+typedef struct	s_ifs
+{
+	int			ifd;
+	size_t		i;
+	size_t		rd;
+	ssize_t		lim;
+	t_bool		print : 1;
+	char		*buf;
+	char		stack[FT_PAGE_SIZE + 1];
+}				t_ifs;
+
+extern void		ft_ifsctor(t_ifs *self, int ifd);
+extern void		ft_ifsdtor(t_ifs *self);
+extern int		ft_ifsopen(t_ifs *self, char const *filename);
+extern int		ft_ifsclose(t_ifs *self);
+extern char		ft_ifspeek(t_ifs *self, size_t i);
+extern ssize_t	ft_ifsbuf(t_ifs *self, size_t sz, char **out);
+extern ssize_t	ft_ifschr(t_ifs *self, size_t off, char c, char **out);
+extern ssize_t	ft_ifsrd(t_ifs *s, void *b, size_t n);
 
 #endif

@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   verbose.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alucas- <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2018/03/12 18:16:00 by alucas-           #+#    #+#             */
+/*   Updated: 2018/03/12 18:16:02 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "pushswap.h"
 
-inline int	ft_iscntrl(int c)
+void	ps_dump(t_stream *s, t_lst *lst)
 {
-	return (c < 32 || c == 127);
-}
+	t_inode *node;
 
-inline int	ft_iscoolc(int c)
-{
-	return (ft_isspace(c) || ft_isprint(c));
+	node = (t_inode *)lst->next;
+	while (node != (t_inode *)lst)
+	{
+		ft_fprintf(s, "%d\n", node->val);
+		node = node->next;
+	}
 }

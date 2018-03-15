@@ -37,6 +37,7 @@ extern t_node		*ft_nodelink(t_node *node, t_node *prev, t_node *next);
 extern t_node		*ft_nodeulink(t_node *node, t_node *prev, t_node *next);
 extern t_node		*ft_noderput(t_node *node, t_node *new);
 extern t_node		*ft_nodelput(t_node *node, t_node *new);
+extern t_node		*ft_nodenswp(t_node *anode);
 extern void			ft_lstctor(t_lst *lst);
 extern t_node		*ft_lstpush(t_lst *lst, t_node *node);
 extern t_node		*ft_lstusht(t_lst *lst, t_node *node);

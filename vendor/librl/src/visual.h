@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   visual.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
+/*   Updated: 2018/01/06 11:13:28 by cmalfroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#ifndef LIBRL_VISUAL_H
+# define LIBRL_VISUAL_H
 
-inline int	ft_iscntrl(int c)
-{
-	return (c < 32 || c == 127);
-}
+# include "edit.h"
 
-inline int	ft_iscoolc(int c)
-{
-	return (ft_isspace(c) || ft_isprint(c));
-}
+extern void		rl_visualdtor(void);
+extern int		rl_visualtoggle(void);
+extern int		rl_visualyank(void);
+extern int		rl_visualdelete(void);
+extern int		rl_visualpaste(void);
+
+#endif

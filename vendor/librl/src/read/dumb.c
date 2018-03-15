@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   read/dumb.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
+/*   Updated: 2017/12/13 08:23:58 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "../read.h"
 
-inline int	ft_iscntrl(int c)
+inline t_bool	rl_isdumb(void)
 {
-	return (c < 32 || c == 127);
-}
+	static int8_t	isdumb = -1;
+	char			*term;
 
-inline int	ft_iscoolc(int c)
-{
-	return (ft_isspace(c) || ft_isprint(c));
+	if (isdumb == -1)
+	{
+		if ((term = getenv("TERM")) && !ft_strcmp("dumb", term))
+			isdumb = 1;
+		else
+			isdumb = 0;
+	}
+	return ((t_bool)isdumb);
 }

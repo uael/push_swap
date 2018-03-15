@@ -1,23 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   edit/utf8.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
+/*   Updated: 2017/12/13 08:23:58 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "../edit.h"
 
-inline int	ft_iscntrl(int c)
-{
-	return (c < 32 || c == 127);
-}
+#define UNI "\xe2\x9d\xaf"
 
-inline int	ft_iscoolc(int c)
+inline int	rl_wstrlen(char *str)
 {
-	return (ft_isspace(c) || ft_isprint(c));
+	int i;
+	int ix;
+	int q;
+
+	q = 0;
+	i = 0;
+	ix = (int)ft_strlen(str);
+	while (i < ix)
+	{
+		++q;
+		if (*(str + i) == '\033')
+		{
+			while (*(str + ++i - 1) != 'm')
+				;
+			--q;
+		}
+		else if (!ft_strncmp(UNI, str + i, sizeof(UNI) - 1))
+			i += sizeof(UNI) - 1;
+		else
+			++i;
+	}
+	return (q);
 }

@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cty_3.c                                         :+:      :+:    :+:   */
+/*   io/fcntl.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/12/11 11:11:30 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/17 09:51:01 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/cty.h"
+#include "libft/io.h"
 
-inline int	ft_iscntrl(int c)
+inline ssize_t	ft_read(int fd, void *buf, size_t sz)
 {
-	return (c < 32 || c == 127);
+	ssize_t		rd;
+
+	while ((rd = read(fd, buf, sz)) < 0)
+		if (errno != EINTR && errno != EAGAIN)
+			return (ft_throw(WUT, FT_DBG));
+	return (rd);
 }
 
-inline int	ft_iscoolc(int c)
+inline ssize_t	ft_write(int fd, void const *buf, size_t sz)
 {
-	return (ft_isspace(c) || ft_isprint(c));
+	ssize_t		wr;
+
+	while ((wr = write(fd, buf, sz)) < 0)
+		if (errno != EINTR && errno != EAGAIN)
+			return (ft_throw(WUT, FT_DBG));
+	return (wr);
 }
