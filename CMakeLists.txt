@@ -14,7 +14,7 @@ set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG}
 
 add_executable(checker include/pushswap.h
   src/operate.c
-  src/verbose.c
+  src/list.c
   src/checker.c)
 set_property(TARGET checker PROPERTY C_STANDARD 90)
 target_include_directories(checker PUBLIC include)
@@ -35,7 +35,7 @@ endif ()
 
 add_executable(push_swap include/pushswap.h
   src/operate.c
-  src/verbose.c
+  src/list.c
   src/pushswap.c)
 set_property(TARGET push_swap PROPERTY C_STANDARD 90)
 target_include_directories(push_swap PUBLIC include)

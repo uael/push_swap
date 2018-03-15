@@ -17,6 +17,7 @@
 
 # define LST_A (1 << 0)
 # define LST_B (1 << 1)
+# define LST_P (1 << 2)
 
 # define OP_S 0
 # define OP_P 1
@@ -36,5 +37,6 @@ typedef void		(t_operate)(t_lst *a, t_lst *b, uint8_t lst);
 
 extern void			ps_operate(t_lst *a, t_lst *b, uint8_t op, uint8_t lst);
 extern void			ps_dump(t_stream *s, t_lst *lst);
+extern int			ps_issort(t_lst *lst);
 
 #endif
