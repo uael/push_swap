@@ -17,14 +17,14 @@ static void	operates(t_lst *a, t_lst *b, uint8_t lst)
 	if ((lst & LST_A))
 	{
 		if (a && a->len > 1)
-			ft_nodenswp(a->next);
+			ft_nodenswp(a->head);
 		else
 			lst &= ~LST_A;
 	}
 	if ((lst & LST_B))
 	{
 		if (b && b->len > 1)
-			ft_nodenswp(b->next);
+			ft_nodenswp(b->head);
 		else
 			lst &= ~LST_B;
 	}
@@ -46,7 +46,7 @@ static void	operatep(t_lst *a, t_lst *b, uint8_t lst)
 	{
 		if (b && b->len)
 		{
-			node = b->next;
+			node = b->head;
 			--b->len;
 			ft_nodeulink(node, node->prev, node->next);
 			ft_lstusht(a, node);
@@ -57,7 +57,7 @@ static void	operatep(t_lst *a, t_lst *b, uint8_t lst)
 	{
 		if (a && a->len)
 		{
-			node = a->next;
+			node = a->head;
 			--a->len;
 			ft_nodeulink(node, node->prev, node->next);
 			ft_lstusht(b, node);
@@ -97,14 +97,14 @@ static void	operaterr(t_lst *a, t_lst *b, uint8_t lst)
 	if ((lst & LST_A))
 	{
 		if (a && a->len > 1)
-			ft_nodenswp(a->prev);
+			ft_nodenswp(a->tail);
 		else
 			lst &= ~LST_A;
 	}
 	if ((lst & LST_B))
 	{
 		if (b && b->len > 1)
-			ft_nodenswp(b->prev);
+			ft_nodenswp(b->tail);
 		else
 			lst &= ~LST_B;
 	}

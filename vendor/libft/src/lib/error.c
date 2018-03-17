@@ -14,7 +14,7 @@
 
 int	ft_error(int rno, int eno)
 {
-	if (eno <= 0 || eno > EQFULL)
+	if (eno <= 0)
 	{
 		errno = EINVAL;
 		return (-1);

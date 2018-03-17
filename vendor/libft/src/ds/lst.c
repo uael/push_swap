@@ -15,8 +15,8 @@
 void	ft_lstctor(t_lst *lst)
 {
 	ft_bzero(lst, sizeof(t_lst));
-	lst->prev = (struct s_node *)lst;
-	lst->next = (struct s_node *)lst;
+	lst->tail = (struct s_node *)lst;
+	lst->head = (struct s_node *)lst;
 }
 
 t_node	*ft_lstpush(t_lst *lst, t_node *node)
@@ -35,12 +35,12 @@ t_node	*ft_lstpop(t_lst *lst)
 {
 	if (!lst->len)
 		return (NULL);
-	return (ft_nodeulink(lst->prev, lst->prev->prev, lst->prev->next));
+	return (ft_nodeulink(lst->tail, lst->tail->prev, lst->tail->next));
 }
 
 t_node	*ft_lstsht(t_lst *lst)
 {
 	if (!lst->len)
 		return (NULL);
-	return (ft_nodeulink(lst->next, lst->next->prev, lst->next->next));
+	return (ft_nodeulink(lst->head, lst->head->prev, lst->head->next));
 }

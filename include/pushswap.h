@@ -37,14 +37,13 @@ typedef struct		s_inode
 }					t_inode;
 
 typedef void		(t_operate)(t_lst *a, t_lst *b, uint8_t lst);
-typedef int			(t_fatal)(void *arg, int ecode);
 
 extern int			atoio(char *str);
 
 extern void			ps_operate(t_lst *a, t_lst *b, uint8_t op, uint8_t lst);
 extern void			ps_make(char *av[], t_inode *node, t_lst *a);
+extern void			ps_makea(char *av[], t_inode *node, t_lst *a, int *arr);
 extern void			ps_dump(t_stream *s, t_lst *lst);
 extern int			ps_issort(t_lst *lst);
-extern int			ps_error(t_fatal *fatal, void *arg);
 
 #endif

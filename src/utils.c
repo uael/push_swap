@@ -22,7 +22,7 @@ inline int	atoio(char *str)
 	if (!ft_isdigit(*str) && *str != '-' && *str != '+')
 		exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
 	if (*str == '-')
-		neg = ++str > 0;
+		neg = (size_t)++str > 0;
 	else if (*str == '+')
 		++str;
 	while (*str)

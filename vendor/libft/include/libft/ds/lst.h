@@ -28,8 +28,8 @@ typedef struct		s_node
 
 typedef struct		s_lst
 {
-	struct s_node	*prev;
-	struct s_node	*next;
+	struct s_node	*tail;
+	struct s_node	*head;
 	size_t			len;
 }					t_lst;
 

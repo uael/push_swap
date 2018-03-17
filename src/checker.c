@@ -94,27 +94,27 @@ static void			ck_init(t_checker *ck, int ac, char *av[])
 
 static int			ck_eval(t_checker *ck, char const *op)
 {
-	if (!ft_strcmp("sa\n", op))
+	if (!ft_strcmp("sa\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_S, LST_A);
-	else if (!ft_strcmp("sb\n", op))
+	else if (!ft_strcmp("sb\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_S, LST_B);
-	else if (!ft_strcmp("ss\n", op))
+	else if (!ft_strcmp("ss\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_S, LST_A | LST_B);
-	else if (!ft_strcmp("pa\n", op))
+	else if (!ft_strcmp("pa\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_P, LST_A);
-	else if (!ft_strcmp("pb\n", op))
+	else if (!ft_strcmp("pb\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_P, LST_B);
-	else if (!ft_strcmp("ra\n", op))
+	else if (!ft_strcmp("ra\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_R, LST_A);
-	else if (!ft_strcmp("rb\n", op))
+	else if (!ft_strcmp("rb\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_R, LST_B);
-	else if (!ft_strcmp("rr\n", op))
+	else if (!ft_strcmp("rr\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_R, LST_A | LST_B);
-	else if (!ft_strcmp("rra\n", op))
+	else if (!ft_strcmp("rra\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_RR, LST_A);
-	else if (!ft_strcmp("rrb\n", op))
+	else if (!ft_strcmp("rrb\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_RR, LST_B);
-	else if (!ft_strcmp("rrr\n", op))
+	else if (!ft_strcmp("rrr\r\n", op))
 		ps_operate(&ck->a, &ck->b, OP_RR, LST_A | LST_B);
 	else
 		return (0);
@@ -134,18 +134,19 @@ int					main(int ac, char *av[])
 	ps_make(av + g_optind, ck.nodes, &ck.a);
 	while (!rl_getline(ck.fd, "checker \033[36m❯\033[0m ", &op))
 	{
-		if (!*op || *op == '\n' || ck_eval(&ck, op))
+		if (!*op || *op == '\r' || ck_eval(&ck, op))
 			continue ;
-		else if (!ft_strcmp("dumpa\n", op))
+		else if (!ft_strcmp("dumpa\r\n", op))
 			ps_dump(g_stdout, &ck.a);
-		else if (!ft_strcmp("dumpb\n", op))
+		else if (!ft_strcmp("dumpb\r\n", op))
 			ps_dump(g_stdout, &ck.b);
-		else if (ck.tty && ft_strcmp("exit\n", op))
+		else if (ck.tty && ft_strcmp("exit\r\n", op))
 			ft_dprintf(STDERR_FILENO, ERR"operation not found\n");
 		else
 			ck_exit(&ck, !(ck.tty && !ft_strcmp("exit\n", op)));
 		ft_fflush(g_stdout);
 	}
 	ft_fputs(g_stdout, ck.b.len || !ps_issort(&ck.a) ? "KO\n" : "OK\n");
+	ps_dump(g_stdout, &ck.a);
 	return (ck_exit(&ck, EXIT_SUCCESS));
 }
