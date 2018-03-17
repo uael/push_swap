@@ -18,6 +18,7 @@ void	ft_fflushstd(void)
 {
 	ft_fflush(g_stderr);
 	ft_fflush(g_stdout);
+	ft_fflush(g_stdin);
 }
 
 int		ft_fflush(t_stream *f)

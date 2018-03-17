@@ -25,7 +25,7 @@ static void	flushinit(t_stream *s)
 		atexit(ft_fflushstd);
 		init = 1;
 	}
-	if (s->fd > 0 && s->fd < 3)
+	if (s == g_stdin || s == g_stdout || s == g_stderr)
 	{
 		if (last && last != s)
 			ft_fflush(last);

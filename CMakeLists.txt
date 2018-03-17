@@ -13,6 +13,7 @@ set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG}
   -fno-omit-frame-pointer -fsanitize=address")
 
 add_executable(checker include/pushswap.h
+  src/utils.c
   src/operate.c
   src/list.c
   src/checker.c)
@@ -34,6 +35,7 @@ else ()
 endif ()
 
 add_executable(push_swap include/pushswap.h
+  src/utils.c
   src/operate.c
   src/list.c
   src/pushswap.c)

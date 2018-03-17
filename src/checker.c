@@ -14,59 +14,39 @@
 
 #include "checker.h"
 
-#define ERR_MSG "Error\n"
+static int8_t		g_comp_idx = 0;
+static char			*g_comp_ops[] = {
+	"sa", "sb", "ss", "pa", "pb", "ra", "rb", "rr", "rra", "rrb", "rrr",
+	"dumpa", "dumpb", "exit", NULL
+};
 
-inline static int	atoio(char *str)
+static void			ck_complete(t_sds *cmd)
 {
-	int		neg;
-	long	ret;
+	char	*test;
+	char	*candidate;
+	int8_t	match;
+	int		score;
+	int		max;
 
-	neg = 0;
-	ret = 0;
-	if (!ft_isdigit(*str) && *str != '-' && *str != '+')
-		exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
-	if (*str == '-')
-		neg = ++str > 0;
-	else if (*str == '+')
-		++str;
-	while (*str)
-		if (!ft_isdigit(*str) ||
-			(ret = ret * 10 + *str++ - '0') > (neg ? 1L + INT_MAX : INT_MAX))
-			exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
-	return ((int)ret * (neg ? -1 : 1));
-}
-
-inline static void	bitset(uint32_t *words, uint32_t n)
-{
-	words[n / (sizeof(uint32_t) * 8)] |= (1 << n % (sizeof(uint32_t) * 8));
-}
-
-inline static int	bitget(uint32_t const *words, uint32_t n)
-{
-	uint32_t bit;
-
-	bit = words[n / (sizeof(uint32_t) * 8)] & (1 << n % (sizeof(uint32_t) * 8));
-	return (bit != 0);
-}
-
-static void			makea(char *av[], t_inode *node, t_lst *a)
-{
-	static uint32_t	set[UINT32_MAX / 32] = { 0 };
-
-	while (*av)
+	if (!cmd->len || !ft_strcmp(g_comp_ops[g_comp_idx], cmd->buf))
+		g_comp_idx = (int8_t)(g_comp_idx >= 13 ? 0 : g_comp_idx + 1);
+	else
 	{
-		node->val = atoio(*av++);
-		if (!bitget(set, (uint32_t)node->val))
-			bitset(set, (uint32_t)node->val);
-		else
-			exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
-		ft_lstpush(a, (t_node *)(node++));
+		max = 0;
+		match = -1;
+		g_comp_idx = -1;
+		while (g_comp_ops[++g_comp_idx] && !(score = 0))
+		{
+			test = g_comp_ops[g_comp_idx];
+			candidate = cmd->buf - 1;
+			while (*++candidate && *test)
+				if (*candidate == *test)
+					score += 4 - (test++ - g_comp_ops[g_comp_idx]);
+			match < 0 || score > max ? (match = g_comp_idx) : 0;
+		}
+		g_comp_idx = match;
 	}
-}
-
-static void			complete(t_sds *cmd)
-{
-	(void)cmd;
+	(void)((cmd->len = 0) || ft_sdsapd(cmd, g_comp_ops[g_comp_idx]));
 }
 
 static int			ck_exit(t_checker *ck, int ecode)
@@ -107,9 +87,38 @@ static void			ck_init(t_checker *ck, int ac, char *av[])
 	if ((ck->tty = isatty(ck->fd)))
 	{
 		rl_histload(".pushswapst");
-		rl_complete(complete);
+		rl_complete(ck_complete);
 	}
 	ck->nodes = ft_calloc(len * sizeof(t_inode));
+}
+
+static int			ck_eval(t_checker *ck, char const *op)
+{
+	if (!ft_strcmp("sa\n", op))
+		ps_operate(&ck->a, &ck->b, OP_S, LST_A);
+	else if (!ft_strcmp("sb\n", op))
+		ps_operate(&ck->a, &ck->b, OP_S, LST_B);
+	else if (!ft_strcmp("ss\n", op))
+		ps_operate(&ck->a, &ck->b, OP_S, LST_A | LST_B);
+	else if (!ft_strcmp("pa\n", op))
+		ps_operate(&ck->a, &ck->b, OP_P, LST_A);
+	else if (!ft_strcmp("pb\n", op))
+		ps_operate(&ck->a, &ck->b, OP_P, LST_B);
+	else if (!ft_strcmp("ra\n", op))
+		ps_operate(&ck->a, &ck->b, OP_R, LST_A);
+	else if (!ft_strcmp("rb\n", op))
+		ps_operate(&ck->a, &ck->b, OP_R, LST_B);
+	else if (!ft_strcmp("rr\n", op))
+		ps_operate(&ck->a, &ck->b, OP_R, LST_A | LST_B);
+	else if (!ft_strcmp("rra\n", op))
+		ps_operate(&ck->a, &ck->b, OP_RR, LST_A);
+	else if (!ft_strcmp("rrb\n", op))
+		ps_operate(&ck->a, &ck->b, OP_RR, LST_B);
+	else if (!ft_strcmp("rrr\n", op))
+		ps_operate(&ck->a, &ck->b, OP_RR, LST_A | LST_B);
+	else
+		return (0);
+	return (1);
 }
 
 int					main(int ac, char *av[])
@@ -122,44 +131,19 @@ int					main(int ac, char *av[])
 	ck_init(&ck, ac, av);
 	ft_lstctor(&ck.a);
 	ft_lstctor(&ck.b);
-	makea(av + g_optind, ck.nodes, &ck.a);
+	ps_make(av + g_optind, ck.nodes, &ck.a);
 	while (!rl_getline(ck.fd, "checker \033[36m❯\033[0m ", &op))
 	{
-		if (!ft_strcmp("sa\n", op))
-			ps_operate(&ck.a, &ck.b, OP_S, LST_A);
-		else if (!ft_strcmp("sb\n", op))
-			ps_operate(&ck.a, &ck.b, OP_S, LST_B);
-		else if (!ft_strcmp("ss\n", op))
-			ps_operate(&ck.a, &ck.b, OP_S, LST_A | LST_B);
-		else if (!ft_strcmp("pa\n", op))
-			ps_operate(&ck.a, &ck.b, OP_P, LST_A);
-		else if (!ft_strcmp("pb\n", op))
-			ps_operate(&ck.a, &ck.b, OP_P, LST_B);
-		else if (!ft_strcmp("ra\n", op))
-			ps_operate(&ck.a, &ck.b, OP_R, LST_A);
-		else if (!ft_strcmp("rb\n", op))
-			ps_operate(&ck.a, &ck.b, OP_R, LST_B);
-		else if (!ft_strcmp("rr\n", op))
-			ps_operate(&ck.a, &ck.b, OP_R, LST_A | LST_B);
-		else if (!ft_strcmp("rra\n", op))
-			ps_operate(&ck.a, &ck.b, OP_RR, LST_A);
-		else if (!ft_strcmp("rrb\n", op))
-			ps_operate(&ck.a, &ck.b, OP_RR, LST_B);
-		else if (!ft_strcmp("rrr\n", op))
-			ps_operate(&ck.a, &ck.b, OP_RR, LST_A | LST_B);
+		if (!*op || *op == '\n' || ck_eval(&ck, op))
+			continue ;
 		else if (!ft_strcmp("dumpa\n", op))
 			ps_dump(g_stdout, &ck.a);
 		else if (!ft_strcmp("dumpb\n", op))
 			ps_dump(g_stdout, &ck.b);
-		else if (ck.tty)
-			ft_dprintf(STDERR_FILENO, "operation not found\n");
-		else if (*op == '\n')
-			break ;
+		else if (ck.tty && ft_strcmp("exit\n", op))
+			ft_dprintf(STDERR_FILENO, ERR"operation not found\n");
 		else
-		{
-			ft_dprintf(STDERR_FILENO, "%s", op);
-			exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
-		}
+			ck_exit(&ck, !(ck.tty && !ft_strcmp("exit\n", op)));
 		ft_fflush(g_stdout);
 	}
 	ft_fputs(g_stdout, ck.b.len || !ps_issort(&ck.a) ? "KO\n" : "OK\n");

@@ -14,7 +14,7 @@
 
 #include "internal.h"
 
-static uint8_t	g_buf[FT_BUFSIZ];
+static uint8_t	g_buf[FT_BUFSIZ + 1];
 static t_stream	g_f = {
 	.buf = g_buf,
 	.buf_size = sizeof(g_buf),
