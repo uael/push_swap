@@ -32,11 +32,11 @@ static void	operates(t_lst *a, t_lst *b, uint8_t lst)
 	if (!(lst & LST_P))
 		return ;
 	if ((lst & LST_A) && (lst & LST_B))
-		ft_fwrite(g_stdout, "ss\n", 1, 3);
+		ft_dprintf(1, "ss\n");
 	else if ((lst & LST_A))
-		ft_fwrite(g_stdout, "sa\n", 1, 3);
+		ft_dprintf(1, "sa\n");
 	else if ((lst & LST_B))
-		ft_fwrite(g_stdout, "sb\n", 1, 3);
+		ft_dprintf(1, "sb\n");
 }
 
 static void	operatep(t_lst *a, t_lst *b, uint8_t lst)
@@ -51,7 +51,7 @@ static void	operatep(t_lst *a, t_lst *b, uint8_t lst)
 			--b->len;
 			ft_nodeulink(node, node->prev, node->next);
 			ft_lstusht(a, node);
-			(lst & LST_P) ? ft_fwrite(g_stdout, "pa\n", 1, 3) : 0;
+			(lst & LST_P) ? ft_dprintf(1, "pa\n") : 0;
 		}
 	}
 	else if ((lst & LST_B))
@@ -62,7 +62,7 @@ static void	operatep(t_lst *a, t_lst *b, uint8_t lst)
 			--a->len;
 			ft_nodeulink(node, node->prev, node->next);
 			ft_lstusht(b, node);
-			(lst & LST_P) ? ft_fwrite(g_stdout, "pb\n", 1, 3) : 0;
+			(lst & LST_P) ? ft_dprintf(1, "pb\n") : 0;
 		}
 	}
 }
@@ -86,11 +86,11 @@ static void	operater(t_lst *a, t_lst *b, uint8_t lst)
 	if (!(lst & LST_P))
 		return ;
 	if ((lst & LST_A) && (lst & LST_B))
-		ft_fwrite(g_stdout, "rr\n", 1, 3);
+		ft_dprintf(1, "rr\n");
 	else if ((lst & LST_A))
-		ft_fwrite(g_stdout, "ra\n", 1, 3);
+		ft_dprintf(1, "ra\n");
 	else if ((lst & LST_B))
-		ft_fwrite(g_stdout, "rb\n", 1, 3);
+		ft_dprintf(1, "rb\n");
 }
 
 static void	operaterr(t_lst *a, t_lst *b, uint8_t lst)
@@ -112,11 +112,11 @@ static void	operaterr(t_lst *a, t_lst *b, uint8_t lst)
 	if (!(lst & LST_P))
 		return ;
 	if ((lst & LST_A) && (lst & LST_B))
-		ft_fwrite(g_stdout, "rrr\n", 1, 4);
+		ft_dprintf(1, "rrr\n");
 	else if ((lst & LST_A))
-		ft_fwrite(g_stdout, "rra\n", 1, 4);
+		ft_dprintf(1, "rra\n");
 	else if ((lst & LST_B))
-		ft_fwrite(g_stdout, "rrb\n", 1, 4);
+		ft_dprintf(1, "rrb\n");
 }
 
 void		ps_operate(t_lst *a, t_lst *b, uint8_t op, uint8_t lst)
@@ -129,12 +129,11 @@ void		ps_operate(t_lst *a, t_lst *b, uint8_t op, uint8_t lst)
 	};
 
 	operate[op](a, b, lst);
-/*
-	ft_fwrite(g_stdout, "a[", sizeof(char), 2);
+
+	/*ft_fwrite(g_stdout, "a[", sizeof(char), 2);
 	ps_dump(g_stdout, a);
 	ft_fwrite(g_stdout, "] b[", sizeof(char), 4);
 	ps_dump(g_stdout, b);
 	ft_fwrite(g_stdout, "]\n", sizeof(char), 2);
-	ft_fflush(g_stdout);
-	getchar();*/
+	ft_fflush(g_stdout);*/
 }

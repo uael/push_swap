@@ -44,5 +44,6 @@ extern void			ps_makea(char *av[], t_inode *node, t_lst *a, int *arr);
 extern void			ps_dump(t_stream *s, t_lst *lst);
 extern int			ps_issort(t_lst *lst);
 extern int			ps_isnsort(t_lst *lst, int n);
+extern int			ps_min(t_lst *lst, int n);
 
 #endif

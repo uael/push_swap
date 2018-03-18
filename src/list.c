@@ -57,3 +57,21 @@ int		ps_isnsort(t_lst *lst, int n)
 	}
 	return (1);
 }
+
+int		ps_min(t_lst *lst, int n)
+{
+	t_inode	*node;
+	t_inode	*next;
+	int		min;
+
+	min = INT_MAX;
+	node = (t_inode *)lst->head;
+	while (n-- && node != (t_inode *)lst->tail)
+	{
+		next = node->next;
+		if (node->val < min)
+			min = node->val;
+		node = next;
+	}
+	return (min);
+}
