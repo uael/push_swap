@@ -26,9 +26,9 @@ LIBS = rl ft
 LIB_NAME = rl ft
 3TH_NAME = libft librl
 SRCA_NAME = \
-	checker.c operate.c list.c utils.c
+	checker.c operate.c list.c validate.c
 SRCB_NAME = \
-	pushswap.c operate.c list.c utils.c
+	pushswap.c operate.c list.c validate.c
 
 3TH = $(addprefix $(3TH_PATH)/, $(3TH_NAME))
 OBJA = $(addprefix $(OBJ_PATH)/, $(SRCA_NAME:.c=.o))

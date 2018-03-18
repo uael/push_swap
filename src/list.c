@@ -19,8 +19,10 @@ void	ps_dump(t_stream *s, t_lst *lst)
 	node = (t_inode *)lst->head;
 	while (node != (t_inode *)lst)
 	{
-		ft_fprintf(s, "%d\n", node->val);
+		ft_fprintf(s, "%d", node->val);
 		node = node->next;
+		if (node != (t_inode *)lst)
+			ft_fprintf(s, " ");
 	}
 }
 
@@ -31,6 +33,22 @@ int		ps_issort(t_lst *lst)
 
 	node = (t_inode *)lst->head;
 	while (node != (t_inode *)lst->tail)
+	{
+		next = node->next;
+		if (node->val > next->val)
+			return (0);
+		node = next;
+	}
+	return (1);
+}
+
+int		ps_isnsort(t_lst *lst, int n)
+{
+	t_inode *node;
+	t_inode *next;
+
+	node = (t_inode *)lst->head;
+	while (n-- && node != (t_inode *)lst->tail)
 	{
 		next = node->next;
 		if (node->val > next->val)

@@ -40,7 +40,8 @@ void				ps_makea(char *av[], t_inode *node, t_lst *a, int *arr)
 	it = arr;
 	while (*av)
 	{
-		*it = atoio(*av++);
+		*it = ft_atoi(*av++);
+		errno ? exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1) : 0;
 		if (!bitget(set, (uint32_t)*it))
 			bitset(set, (uint32_t)*it);
 		else
@@ -49,11 +50,12 @@ void				ps_makea(char *av[], t_inode *node, t_lst *a, int *arr)
 		ft_lstpush(a, (t_node *)(node++));
 	}
 	ft_shellsort(arr, it - arr, sizeof(int), (t_ncmp *)icmp);
+	node -= a->len;
 	while (--it >= arr)
 	{
-		n = node - 1;
+		n = node;
 		while (n->val != *it)
-			--n;
+			++n;
 		n->val = (int)(it - arr);
 	}
 }
@@ -62,9 +64,12 @@ void				ps_make(char *av[], t_inode *node, t_lst *a)
 {
 	static uint32_t	set[UINT32_MAX / 32] = { 0 };
 
+	errno = 0;
 	while (*av)
 	{
-		node->val = atoio(*av++);
+		node->val = ft_atoi(*av++);
+		if (errno)
+			exit(ft_fprintf(g_stderr, ERR_MSG) - sizeof(ERR_MSG) + 1);
 		if (!bitget(set, (uint32_t)node->val))
 			bitset(set, (uint32_t)node->val);
 		else

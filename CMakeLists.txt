@@ -14,7 +14,6 @@ set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG}
 
 add_executable(checker include/pushswap.h
   src/validate.c
-  src/utils.c
   src/operate.c
   src/list.c
   src/checker.c)
@@ -37,7 +36,6 @@ endif ()
 
 add_executable(push_swap include/pushswap.h
   src/validate.c
-  src/utils.c
   src/operate.c
   src/list.c
   src/pushswap.c)

@@ -10,36 +10,52 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "pushswap.h"
 
 #define PS_VERBOSE (1 << 0)
 #define PS_COLOR (1 << 1)
 
-static inline int	swap(t_lst *a, t_lst *b)
+static int	partition(t_lst *a, t_lst *b, int low, int high)
 {
-	t_inode *ahead;
-	t_inode *bhead;
-	uint8_t flag;
+	int r;
+	int pi;
 
-	flag = 0;
-	ahead = (t_inode *)a->head;
-	bhead = (t_inode *)b->head;
-	if (a->len > 1 && ahead->next->val < ahead->val)
-		flag |= LST_A;
-	if (b->len > 1 && bhead->next->val < bhead->val)
-		flag |= LST_B;
-	if (flag)
+	pi = (high - low) / 2 + low;
+	r = 0;
+	while ((int)b->len <= pi - low)
 	{
-		ps_operate(a, b, OP_S, (uint8_t)(flag | LST_P));
-		return (1);
+		if (a->len && ((t_inode *)a->head)->val <= pi)
+			ps_operate(a, b, OP_P, LST_B | LST_P);
+		else
+		{
+			ps_operate(a, b, OP_R, LST_A | LST_P);
+			++r;
+		}
 	}
-	return (0);
+
+	// Reset order
+	while (--r >= 0)
+		ps_operate(a, b, OP_RR, LST_A | LST_P);
+
+	// Push low values to A
+	while (b->len)
+		ps_operate(a, b, OP_P, LST_A | LST_P);
+	return (pi);
 }
 
-static void sort(t_lst *a, t_lst *b)
+static void sort(t_lst *a, t_lst *b, int low, int high)
 {
-	(void)a;
-	(void)b;
+	int pi;
+	int n;
+
+	if ((n = high - low) <= 0 || ps_isnsort(a, n))
+		return ;
+	pi = partition(a, b, low, high);
+	sort(a, b, low, pi);
+	while (a->len && ((t_inode *)a->head)->val <= pi)
+		ps_operate(a, b, OP_R, LST_A | LST_P);
+	sort(a, b, pi + 1, high);
 }
 
 int	main(int ac, char *av[])
@@ -67,10 +83,12 @@ int	main(int ac, char *av[])
 	nodes = ft_calloc(o * sizeof(t_inode));
 	arr = ft_malloc(o * sizeof(int));
 	ps_makea(av + g_optind, nodes, &a, arr);
-	sort(&a, &b);
-	ps_dump(g_stdout, &a);
+	sort(&a, &b, 0, (int)a.len - 1);
+	while (((t_inode *)a.head)->val)
+		ps_operate(&a, &b, OP_R, LST_A | LST_P);
+	o = ps_issort(&a) ? 0 : 1;
 	free(nodes);
 	free(arr);
-	return (EXIT_SUCCESS);
+	return (o);
 }
 

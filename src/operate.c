@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "pushswap.h"
 
 static void	operates(t_lst *a, t_lst *b, uint8_t lst)
@@ -127,5 +128,5 @@ void		ps_operate(t_lst *a, t_lst *b, uint8_t op, uint8_t lst)
 		[OP_RR] = operaterr
 	};
 
-	return (operate[op](a, b, lst));
+	operate[op](a, b, lst);
 }
