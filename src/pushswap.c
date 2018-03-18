@@ -186,8 +186,6 @@ static int	partition(t_lst *a, t_lst *b, int low, int high)
 		while (--r >= 0)
 			ps_operate(a, b, OP_RR, (uint8_t)(LST_A | LST_P));
 
-	if (a->len <= 45)
-		selectionsort(a, b);
 	if (b->len <= 45)
 		selectionsortb(a, b);
 
