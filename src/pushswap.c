@@ -20,26 +20,43 @@ static int	partition(t_lst *a, t_lst *b, int low, int high)
 {
 	int r;
 	int pi;
+	int i;
+
+	t_inode *bhead;
+	uint8_t	fl;
 
 	pi = (high - low) / 2 + low;
 	r = 0;
-	while ((int)b->len <= pi - low)
+	i = (int)b->len;
+	while ((int)(b->len - i) <= pi - low)
 	{
 		if (a->len && ((t_inode *)a->head)->val <= pi)
 			ps_operate(a, b, OP_P, LST_B | LST_P);
 		else
 		{
-			ps_operate(a, b, OP_R, LST_A | LST_P);
+			fl = LST_A;
+			bhead = (t_inode *)b->head;
+			if (b->len > 1 && bhead->val < ((t_inode *)b->tail)->val)
+				fl |= LST_B;
+			ps_operate(a, b, OP_R, (uint8_t)(fl | LST_P));
 			++r;
 		}
 	}
 
 	// Reset order
-	while (--r >= 0)
-		ps_operate(a, b, OP_RR, LST_A | LST_P);
+	if (low || (int)(a->len + b->len - 1) != high)
+		while (--r >= 0)
+		{
+			/*fl = LST_A;
+			bhead = (t_inode *)b->head;
+			if (b->len > 1 && bhead->val > ((t_inode *)b->tail)->val)
+				fl |= LST_B;
+			ps_operate(a, b, OP_RR, (uint8_t)(fl | LST_P));*/
+			ps_operate(a, b, OP_RR, (uint8_t)(LST_A | LST_P));
+		}
 
 	// Push low values to A
-	while (b->len)
+	while ((int)(b->len - i) > 0)
 		ps_operate(a, b, OP_P, LST_A | LST_P);
 	return (pi);
 }

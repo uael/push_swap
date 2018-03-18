@@ -129,4 +129,12 @@ void		ps_operate(t_lst *a, t_lst *b, uint8_t op, uint8_t lst)
 	};
 
 	operate[op](a, b, lst);
+/*
+	ft_fwrite(g_stdout, "a[", sizeof(char), 2);
+	ps_dump(g_stdout, a);
+	ft_fwrite(g_stdout, "] b[", sizeof(char), 4);
+	ps_dump(g_stdout, b);
+	ft_fwrite(g_stdout, "]\n", sizeof(char), 2);
+	ft_fflush(g_stdout);
+	getchar();*/
 }
