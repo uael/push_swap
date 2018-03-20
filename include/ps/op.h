@@ -56,8 +56,14 @@ extern void		ps_rrotate(struct s_ps *ps, uint8_t stack);
 /*
 ** Get the string representation of an operation.
 ** @param op    The operation
- * @return      The the string representation the `op` operation
+** @return      The the string representation the `op` operation
 */
 extern char		*ps_opstr(uint8_t op);
+
+/*
+** Optimize the op stack.
+** @param ps    The ps env
+*/
+extern void		ps_opti(struct s_ps *ps);
 
 #endif

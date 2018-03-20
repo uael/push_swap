@@ -22,16 +22,6 @@ inline t_psnode		*ps_head(t_ps *ps, uint8_t stack)
 	return (NULL);
 }
 
-inline t_psnode		*ps_tail(t_ps *ps, uint8_t stack)
-{
-	t_lst *s;
-
-	s = ps->stacks + stack;
-	if (s->len)
-		return ((t_psnode *)s->tail);
-	return (NULL);
-}
-
 inline void			ps_dump(t_ps *ps, uint8_t stack)
 {
 	t_psnode *node;

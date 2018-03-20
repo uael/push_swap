@@ -38,14 +38,6 @@ typedef struct		s_psnode
 extern t_psnode		*ps_head(struct s_ps *ps, uint8_t stack);
 
 /*
-** Get the tail node of the desired `stack`.
-** @param ps    The ps env
-** @param stack The id of stack to retrieve tail
-** @return      The stack tail or `NULL` if empty
-*/
-extern t_psnode		*ps_tail(struct s_ps *ps, uint8_t stack);
-
-/*
 ** Dump the `stack` to `output` ps file descriptor.
 ** @param ps    The ps env
 ** @param stack The id of stack to retrieve tail

@@ -16,6 +16,7 @@ file(GLOB_RECURSE ps_HDRS ${ps_HDRS} include/ps/*.h)
 
 add_executable(checker ${ps_HDRS} include/ps.h
   src/op.c
+  src/opti.c
   src/ps.c
   src/stack.c)
 set_property(TARGET checker PROPERTY C_STANDARD 90)
@@ -38,6 +39,7 @@ endif ()
 add_executable(push_swap ${ps_HDRS} include/ps.h
   src/push_swap.c
   src/op.c
+  src/opti.c
   src/ps.c
   src/stack.c)
 set_property(TARGET push_swap PROPERTY C_STANDARD 90)
