@@ -25,6 +25,8 @@ typedef enum	e_op
 	OP_RR = 8
 }				t_op;
 
+typedef void	(t_opti)(struct s_ps *ps, uint8_t **it);
+
 /*
 ** Swap the two first nodes of `stack`.
 ** @param ps    The ps env
@@ -65,5 +67,33 @@ extern char		*ps_opstr(uint8_t op);
 ** @param ps    The ps env
 */
 extern void		ps_opti(struct s_ps *ps);
+
+/*
+** Optimize the swap op stack.
+** @param ps    The ps env
+** @param op    The operation iterator
+*/
+extern void		ps_optiswap(struct s_ps *ps, uint8_t **it);
+
+/*
+** Optimize the push op stack.
+** @param ps    The ps env
+** @param op    The operation iterator
+*/
+extern void		ps_optipush(struct s_ps *ps, uint8_t **it);
+
+/*
+** Optimize the rotate op stack.
+** @param ps    The ps env
+** @param op    The operation iterator
+*/
+extern void		ps_optirotate(struct s_ps *ps, uint8_t **it);
+
+/*
+** Optimize the reverse rotate op stack.
+** @param ps    The ps env
+** @param op    The operation iterator
+*/
+extern void		ps_optirrotate(struct s_ps *ps, uint8_t **it);
 
 #endif
