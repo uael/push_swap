@@ -18,6 +18,9 @@ add_executable(checker ${ps_HDRS} include/ps.h
   src/op.c
   src/opti.c
   src/ps.c
+  src/quicksort.c
+  src/selectsort.c
+  src/sort.c
   src/stack.c)
 set_property(TARGET checker PROPERTY C_STANDARD 90)
 target_include_directories(checker PUBLIC include)
@@ -41,6 +44,9 @@ add_executable(push_swap ${ps_HDRS} include/ps.h
   src/op.c
   src/opti.c
   src/ps.c
+  src/quicksort.c
+  src/selectsort.c
+  src/sort.c
   src/stack.c)
 set_property(TARGET push_swap PROPERTY C_STANDARD 90)
 target_include_directories(push_swap PUBLIC include)

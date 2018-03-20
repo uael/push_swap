@@ -28,15 +28,15 @@ inline void			ps_dump(t_ps *ps, uint8_t stack)
 
 	if (!(node = ps_head(ps, stack)))
 		return ;
-	ft_dprintf(ps->output, "%c[", stack ? 'B' : 'A');
+	ft_dprintf(2, "%c[", stack ? 'B' : 'A');
 	while (node != (t_psnode *)(ps->stacks + stack))
 	{
-		ft_dprintf(ps->output, "%d", node->val);
+		ft_dprintf(2, "%d", node->val);
 		node = node->next;
 		if (node != (t_psnode *)(ps->stacks + stack))
-			ft_dprintf(ps->output, " ");
+			ft_dprintf(2, " ");
 	}
-	ft_dprintf(ps->output, "]\n");
+	ft_dprintf(2, "]\n");
 }
 
 static inline int	compare(t_nval const *a, t_nval const *b)

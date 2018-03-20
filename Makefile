@@ -12,7 +12,7 @@
 
 PROJECTA ?= checker
 PROJECTB ?= push_swap
-WFLAGS = -Werror -Wextra -Wall -fsanitize=address
+WFLAGS = -fsanitize=address
 RCFLAGS = $(WFLAGS) -g
 CC ?= gcc
 
@@ -26,9 +26,9 @@ LIBS = rl ft
 LIB_NAME = rl ft
 3TH_NAME = libft librl
 SRCA_NAME = \
-	op.c ps.c stack.c opti.c push_swap.c
+	op.c ps.c stack.c opti.c quicksort.c selectsort.c sort.c push_swap.c
 SRCB_NAME = \
-	op.c ps.c stack.c opti.c push_swap.c
+	op.c ps.c stack.c opti.c quicksort.c selectsort.c sort.c push_swap.c
 
 3TH = $(addprefix $(3TH_PATH)/, $(3TH_NAME))
 OBJA = $(addprefix $(OBJ_PATH)/, $(SRCA_NAME:.c=.o))

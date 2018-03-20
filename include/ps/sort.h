@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ps.h                                               :+:      :+:    :+:   */
+/*   ps/sort.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,12 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PS_H
-# define PS_H
+#ifndef PS_SORT_H
+# define PS_SORT_H
 
-# include "ps/op.h"
-# include "ps/ps.h"
-# include "ps/sort.h"
-# include "ps/stack.h"
+# include <libft.h>
+
+struct s_ps;
+
+extern void	ps_sort(struct s_ps *ps, uint8_t stack, uint32_t n);
+
+extern void	ps_quicksort(struct s_ps *ps, uint8_t stack, uint32_t n);
+
+extern void	ps_selectsort(struct s_ps *ps, uint8_t stack);
+
+extern void	ps_minisort(struct s_ps *ps, uint8_t stack, uint32_t n);
 
 #endif
