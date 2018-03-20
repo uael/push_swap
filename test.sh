@@ -6,7 +6,7 @@ sum=0
 best=1000000
 worst=0
 while [ $count -lt $(($case + 1)) ]; do
-  arg=$(ruby -e "puts (1...$num).to_a.shuffle.join(' ')")
+  arg=$(ruby -e "puts (0...$num).to_a.shuffle.join(' ')")
   line=$(./push_swap $arg | wc -l)
   printf "%03s/% 3s: %s\n" $count $case $line
   sum=$(($sum + $line))

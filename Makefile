@@ -12,8 +12,8 @@
 
 PROJECTA ?= checker
 PROJECTB ?= push_swap
-WFLAGS = -fsanitize=address
-RCFLAGS = $(WFLAGS) -g
+WFLAGS = -Werror -Wextra -Wall
+RCFLAGS = $(WFLAGS) -O2
 CC ?= gcc
 
 INC_PATH = include
