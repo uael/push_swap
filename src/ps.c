@@ -76,10 +76,10 @@ void		ps_init(t_ps *ps, int ac, char *av[])
 		else
 			ps_exit(ps, EXIT_FAILURE);
 	if (!(opt = ac - g_optind))
-		return ps_exit(ps, EXIT_FAILURE);
+		return (ps_exit(ps, EXIT_FAILURE));
 	ft_vecctor(&ps->ops, sizeof(uint8_t));
 	ft_memcpy(ps->orders, (int[2]){1, -1}, 2 * sizeof(int));
-	makestack(ps , av + g_optind, (uint32_t)opt);
+	makestack(ps, av + g_optind, (uint32_t)opt);
 	ps_norm(ps, STACK_A);
 }
 

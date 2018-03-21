@@ -35,7 +35,7 @@ void		ps_optipush(t_ps *ps, uint8_t **it)
 			break ;
 }
 
-static void	toboth(t_ps *ps, uint8_t **it, uint8_t ocode)
+void		ps_optiswap(t_ps *ps, uint8_t **it)
 {
 	uint8_t		op;
 	uint8_t		op2;
@@ -44,14 +44,14 @@ static void	toboth(t_ps *ps, uint8_t **it, uint8_t ocode)
 
 	i = (uint32_t)(*it - (uint8_t *)ft_vecbeg(&ps->ops));
 	op = **it;
-	op2 = (uint8_t)(ocode + ((op - ocode) ^ 1));
+	op2 = (uint8_t)(OP_S + ((op - OP_S) ^ 1));
 	while (++*it < (uint8_t *)ft_vecend(&ps->ops))
 		if (**it == op2)
 		{
 			j = (uint32_t)(*it - (uint8_t *)ft_vecbeg(&ps->ops));
 			ft_vecrem(&ps->ops, j, NULL);
 			*it = ft_vecat(&ps->ops, i);
-			**it = (uint8_t)(ocode + STACK_BOTH);
+			**it = (uint8_t)(OP_S + STACK_BOTH);
 			++*it;
 			break ;
 		}
@@ -59,19 +59,52 @@ static void	toboth(t_ps *ps, uint8_t **it, uint8_t ocode)
 			break ;
 }
 
-void		ps_optiswap(t_ps *ps, uint8_t **it)
-{
-	toboth(ps, it, OP_S);
-}
-
 void		ps_optirotate(t_ps *ps, uint8_t **it)
 {
-	toboth(ps, it, OP_R);
+	uint8_t		op;
+	uint8_t		op2;
+	uint32_t	i;
+	uint32_t	j;
+
+	i = (uint32_t)(*it - (uint8_t *)ft_vecbeg(&ps->ops));
+	op = **it;
+	op2 = (uint8_t)(OP_R + ((op - OP_R) ^ 1));
+	while (++*it < (uint8_t *)ft_vecend(&ps->ops))
+		if (**it == op2)
+		{
+			j = (uint32_t)(*it - (uint8_t *)ft_vecbeg(&ps->ops));
+			ft_vecrem(&ps->ops, j, NULL);
+			*it = ft_vecat(&ps->ops, i);
+			**it = (uint8_t)(OP_R + STACK_BOTH);
+			++*it;
+			break ;
+		}
+		else if (**it != op)
+			break ;
 }
 
 void		ps_optirrotate(t_ps *ps, uint8_t **it)
 {
-	toboth(ps, it, OP_RR);
+	uint8_t		op;
+	uint8_t		op2;
+	uint32_t	i;
+	uint32_t	j;
+
+	i = (uint32_t)(*it - (uint8_t *)ft_vecbeg(&ps->ops));
+	op = **it;
+	op2 = (uint8_t)(OP_RR + ((op - OP_RR) ^ 1));
+	while (++*it < (uint8_t *)ft_vecend(&ps->ops))
+		if (**it == op2)
+		{
+			j = (uint32_t)(*it - (uint8_t *)ft_vecbeg(&ps->ops));
+			ft_vecrem(&ps->ops, j, NULL);
+			*it = ft_vecat(&ps->ops, i);
+			**it = (uint8_t)(OP_RR + STACK_BOTH);
+			++*it;
+			break ;
+		}
+		else if (**it != op)
+			break ;
 }
 
 void		ps_opti(t_ps *ps)
