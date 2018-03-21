@@ -81,8 +81,17 @@ endif
 
 re: clean all
 
-norme:
+norme: all
 	norminette include src vendor/lib*/{include,src}
+
+test: all
+	./test.sh
+
+bench:
+	./bench.sh 3
+	./bench.sh 5
+	./bench.sh 100
+	./bench.sh 500
 
 -include $(DEP)
 
@@ -92,4 +101,4 @@ ifndef VERBOSE
  endif
 endif
 
-.PHONY: all, $(PROJECTA), $(PROJECTB), clean, fclean, re, test, norme
+.PHONY: all, $(PROJECTA), $(PROJECTB), clean, fclean, re, norme, test, bench

@@ -23,7 +23,7 @@
 
 typedef struct	s_ps
 {
-	char const	*program;
+	char const	*prg;
 	int			options;
 	int			input;
 	int			output;

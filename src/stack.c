@@ -26,6 +26,11 @@ inline void			ps_dump(t_ps *ps, uint8_t stack)
 {
 	t_psnode *node;
 
+	if (stack == STACK_BOTH)
+	{
+		ps_dump(ps, STACK_A);
+		return (ps_dump(ps, STACK_B));
+	}
 	if (!(node = ps_head(ps, stack)))
 		return ;
 	ft_dprintf(2, "%c[", stack ? 'B' : 'A');

@@ -22,15 +22,14 @@ inline void	ps_swap(struct s_ps *ps, uint8_t stack)
 		ft_nodenswp(s->head);
 		if (ps->options & OPT_OPTI)
 			*(uint8_t *)ft_vecpush(&ps->ops) = OP_S + stack;
-		else if ((ps->options & OPT_OPLOG) || (ps->options & OPT_VERB))
+		if ((ps->options & OPT_OPLOG) || !(ps->options & OPT_OPTI) ||
+			(ps->options & OPT_STEP))
 			ft_dprintf(ps->output, "%s\n", ps_opstr(OP_S + stack));
-		if (ps->options & OPT_VERB)
-		{
-			ps_dump(ps, STACK_A);
-			ps_dump(ps, STACK_B);
-		}
 		if (ps->options & OPT_STEP)
+		{
+			ps_dump(ps, STACK_BOTH);
 			read(STDIN_FILENO, NULL, 1);
+		}
 	}
 }
 
@@ -50,15 +49,14 @@ inline void	ps_pop(struct s_ps *ps, uint8_t stack)
 		ft_lstusht(o, node);
 		if (ps->options & OPT_OPTI)
 			*(uint8_t *)ft_vecpush(&ps->ops) = OP_P + (stack ^ 1);
-		else if ((ps->options & OPT_OPLOG) || (ps->options & OPT_VERB))
+		if ((ps->options & OPT_OPLOG) || !(ps->options & OPT_OPTI) ||
+			(ps->options & OPT_STEP))
 			ft_dprintf(ps->output, "%s\n", ps_opstr(OP_P + (stack ^ 1)));
-		if (ps->options & OPT_VERB)
-		{
-			ps_dump(ps, STACK_A);
-			ps_dump(ps, STACK_B);
-		}
 		if (ps->options & OPT_STEP)
+		{
+			ps_dump(ps, STACK_BOTH);
 			read(STDIN_FILENO, NULL, 1);
+		}
 	}
 }
 
@@ -72,15 +70,14 @@ inline void	ps_rotate(struct s_ps *ps, uint8_t stack)
 		ft_nodenswp((t_node *)s);
 		if (ps->options & OPT_OPTI)
 			*(uint8_t *)ft_vecpush(&ps->ops) = OP_R + stack;
-		else if ((ps->options & OPT_OPLOG) || (ps->options & OPT_VERB))
+		if ((ps->options & OPT_OPLOG) || !(ps->options & OPT_OPTI) ||
+			(ps->options & OPT_STEP))
 			ft_dprintf(ps->output, "%s\n", ps_opstr(OP_R + stack));
-		if (ps->options & OPT_VERB)
-		{
-			ps_dump(ps, STACK_A);
-			ps_dump(ps, STACK_B);
-		}
 		if (ps->options & OPT_STEP)
+		{
+			ps_dump(ps, STACK_BOTH);
 			read(STDIN_FILENO, NULL, 1);
+		}
 	}
 }
 
@@ -94,15 +91,14 @@ inline void	ps_rrotate(struct s_ps *ps, uint8_t stack)
 		ft_nodenswp(s->tail);
 		if (ps->options & OPT_OPTI)
 			*(uint8_t *)ft_vecpush(&ps->ops) = OP_RR + stack;
-		else if ((ps->options & OPT_OPLOG) || (ps->options & OPT_VERB))
+		if ((ps->options & OPT_OPLOG) || !(ps->options & OPT_OPTI) ||
+			(ps->options & OPT_STEP))
 			ft_dprintf(ps->output, "%s\n", ps_opstr(OP_RR + stack));
-		if (ps->options & OPT_VERB)
-		{
-			ps_dump(ps, STACK_A);
-			ps_dump(ps, STACK_B);
-		}
 		if (ps->options & OPT_STEP)
+		{
+			ps_dump(ps, STACK_BOTH);
 			read(STDIN_FILENO, NULL, 1);
+		}
 	}
 }
 
