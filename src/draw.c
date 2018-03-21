@@ -39,24 +39,22 @@ static void		drawwin(t_ps *ps, uint8_t stack, WINDOW *win, uint32_t max)
 {
 	t_psnode	*node;
 	int			x;
-	int			mx;
 	int			y;
-	int			my;
+	int			c;
+	int			m;
 
 	if (!(node = ps_head(ps, stack)))
 		return ;
-	mx = getmaxx(win);
-	my = getmaxy(win) + 1;
 	x = 0;
 	while (node != (t_psnode *)(ps->stacks + stack))
 	{
-		int c = (node->val * 6 / max) + 1;
-		int m = node->val * my / max;
+		c = (node->val * 6 / max) + 1;
+		m = node->val * getmaxy(win) / max;
 		node = node->next;
-		y = (my - m) - 1;
-		while (++y <= my)
+		y = (getmaxy(win) - m) - 1;
+		while (++y <= getmaxy(win))
 			mvwaddch(win, y, x, (chtype)(' ' | COLOR_PAIR(c)));
-		if ((x += 2) >= mx)
+		if ((x += 2) >= getmaxx(win))
 			break ;
 	}
 	wsyncdown(win);
