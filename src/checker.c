@@ -103,6 +103,7 @@ int			main(int ac, char *av[])
 {
 	t_ps	ps;
 	char	*op;
+	int		st;
 
 	if (ac < 2)
 		return (EXIT_SUCCESS);
@@ -119,9 +120,9 @@ int			main(int ac, char *av[])
 			break ;
 		else
 			ps_exit(&ps, EXIT_FAILURE);
-	ft_dprintf(ps.output, ps.stacks[STACK_B].len ||
-		!ps_issort(&ps, STACK_A, -1) ? "KO\n" : "OK\n");
+	ft_dprintf(ps.output, (st = ps.stacks[STACK_B].len ||
+		!ps_issort(&ps, STACK_A, -1)) ? "KO\n" : "OK\n");
 	if (ps.options & OPT_VERB)
 		ps_dump(&ps, STACK_BOTH);
-	ps_exit(&ps, EXIT_SUCCESS);
+	ps_exit(&ps, st);
 }
