@@ -38,6 +38,16 @@ typedef struct		s_psnode
 extern t_psnode		*ps_head(struct s_ps *ps, uint8_t stack);
 
 /*
+** Check whatever `stack` is sorted on a `n` range.
+** @param ps    The ps env
+** @param stack The id of stack to check
+** @param n     The `n` range to check if sorted
+**              If lower than 0, `n` become the length of `stack`
+** @return      If the `stack` is sorted
+*/
+extern int			ps_issort(struct s_ps *ps, uint8_t stack, int64_t n);
+
+/*
 ** Dump the `stack` to `output` ps file descriptor.
 ** @param ps    The ps env
 ** @param stack The id of stack to retrieve tail

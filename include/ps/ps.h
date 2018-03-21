@@ -16,6 +16,8 @@
 # include "op.h"
 # include "stack.h"
 
+# define OPTS "0123456789vsUio"
+
 # define OPT_VERB (1 << 0)
 # define OPT_OPTI (1 << 1)
 # define OPT_STEP (1 << 2)

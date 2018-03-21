@@ -26,7 +26,7 @@ LIBS = rl ft
 LIB_NAME = rl ft
 3TH_NAME = libft librl
 SRCA_NAME = \
-	op.c ps.c stack.c opti.c quicksort.c selectsort.c sort.c push_swap.c
+	op.c ps.c stack.c opti.c quicksort.c selectsort.c sort.c checker.c
 SRCB_NAME = \
 	op.c ps.c stack.c opti.c quicksort.c selectsort.c sort.c push_swap.c
 

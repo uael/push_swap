@@ -58,7 +58,6 @@ void		ps_init(t_ps *ps, int ac, char *av[])
 {
 	int opt;
 
-	g_optind = 1;
 	ps->prg = av[0];
 	while ((opt = ft_getopt(ac, av, "0123456789vsUi:o:")) != WUT)
 		if (opt == 'v')
@@ -94,6 +93,6 @@ void		ps_exit(t_ps *ps, int ecode)
 	if (ps->ops.len)
 		ft_vecdtor(&ps->ops, NULL);
 	if (ecode)
-		ft_fprintf(g_stderr, "Error\n");
+		ft_dprintf(STDERR_FILENO, "Error\n");
 	exit(ecode);
 }

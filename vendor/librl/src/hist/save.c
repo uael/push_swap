@@ -22,11 +22,12 @@ inline int		rl_histsave(char const *filename)
 	char		*eol;
 	uint8_t		i;
 
+	if (!g_hist_len)
+		return (YEP);
 	if (!(out = ft_fopen(filename, O_WRONLY | O_TRUNC | O_CREAT,
 		g_buf, FT_PAGE_SIZE)))
 		return (ft_throw(WUT, FT_DBG));
-	i = 0;
-	ft_sdsctor(&line);
+	ft_memset(&line, i = 0, sizeof(t_sds));
 	while (rl_histcpy(i++, &line))
 	{
 		beg = line.buf;

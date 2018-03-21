@@ -72,3 +72,24 @@ void				ps_norm(t_ps *ps, uint8_t stack)
 		node->val = (uint32_t)(it - vals);
 	}
 }
+
+int					ps_issort(t_ps *ps, uint8_t stack, int64_t n)
+{
+	t_psnode *node;
+	t_psnode *next;
+
+	if (n < 0)
+		n = (int)ps->stacks[stack].len;
+	if (!(node = ps_head(ps, stack)))
+		return (1);
+	while (n-- && node != (t_psnode *)ps->stacks[stack].tail)
+	{
+		next = node->next;
+		if (ps->orders[stack] == 1 && node->val > next->val)
+			return (0);
+		if (ps->orders[stack] == -1 && node->val < next->val)
+			return (0);
+		node = next;
+	}
+	return (1);
+}

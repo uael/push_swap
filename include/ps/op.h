@@ -17,14 +17,15 @@
 
 struct s_ps;
 
-typedef enum	e_op
+typedef enum	e_opcode
 {
 	OP_S = 0,
 	OP_P = 3,
 	OP_R = 5,
 	OP_RR = 8
-}				t_op;
+}				t_opcode;
 
+typedef void	(t_op)(struct s_ps *ps, uint8_t stack);
 typedef void	(t_opti)(struct s_ps *ps, uint8_t **it);
 
 /*

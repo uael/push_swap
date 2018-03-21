@@ -16,6 +16,7 @@ int	main(int ac, char *av[])
 {
 	t_ps	ps;
 	uint8_t	*it;
+	char	*op;
 
 	ft_bzero(&ps, sizeof(t_ps));
 	ps.input = STDIN_FILENO;
@@ -28,7 +29,12 @@ int	main(int ac, char *av[])
 		ps_opti(&ps);
 		it = ft_vecbeg(&ps.ops);
 		while (it < (uint8_t *)ft_vecend(&ps.ops))
-			ft_dprintf(ps.output, "%s\n", ps_opstr(*it++));
+		{
+			op = ps_opstr(*it++);
+			write(ps.output, op, ft_strlen(op));
+		}
 	}
+	if (ps.options & OPT_VERB)
+		ps_dump(&ps, STACK_BOTH);
 	ps_exit(&ps, EXIT_SUCCESS);
 }

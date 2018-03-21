@@ -15,6 +15,7 @@ set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG}
 file(GLOB_RECURSE ps_HDRS ${ps_HDRS} include/ps/*.h)
 
 add_executable(checker ${ps_HDRS} include/ps.h
+  src/checker.c
   src/op.c
   src/opti.c
   src/ps.c
