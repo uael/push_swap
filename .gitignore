@@ -4,6 +4,7 @@ out/
 obj/
 checker
 push_swap
+visu
 *.dev
 *.san
 *.a

@@ -64,3 +64,30 @@ else ()
     PRIVATE -Wall -Werror -Wextra
     PRIVATE -O$<$<CONFIG:Debug>:0 -g3>$<$<CONFIG:Release>:3>)
 endif ()
+
+add_executable(visu ${ps_HDRS} include/ps.h
+  src/visu.c
+  src/draw.c
+  src/op.c
+  src/opti.c
+  src/ps.c
+  src/quicksort.c
+  src/selectsort.c
+  src/sort.c
+  src/stack.c)
+set_property(TARGET visu PROPERTY C_STANDARD 90)
+target_include_directories(visu PUBLIC include)
+target_link_libraries(visu PUBLIC debug ft ncurses)
+
+target_compile_definitions(visu
+  PRIVATE $<$<CONFIG:Debug>:DEBUG>$<$<CONFIG:Release>:NDEBUG>)
+if (MSVC)
+  target_compile_options(visu
+    PRIVATE /MT$<$<CONFIG:Debug>:d> /Oy /W3
+    PRIVATE /D_CRT_SECURE_NO_WARNINGS /Dinline=__inline
+    PRIVATE /O$<$<CONFIG:Debug>:d>$<$<CONFIG:Release>:x>)
+else ()
+  target_compile_options(visu
+    PRIVATE -Wall -Werror -Wextra
+    PRIVATE -O$<$<CONFIG:Debug>:0 -g3>$<$<CONFIG:Release>:3>)
+endif ()
