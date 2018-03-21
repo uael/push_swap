@@ -69,7 +69,7 @@ void		ps_init(t_ps *ps, int ac, char *av[])
 		else if (opt == 'i')
 			tryopen(ps, g_optarg, O_RDONLY, &ps->input);
 		else if (opt == 'o')
-			tryopen(ps, g_optarg, O_WRONLY, &ps->output);
+			tryopen(ps, g_optarg, O_WRONLY | O_CREAT | O_TRUNC, &ps->output);
 		else if (ft_isdigit(opt))
 			break ;
 		else

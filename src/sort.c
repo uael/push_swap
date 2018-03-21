@@ -85,7 +85,7 @@ void			ps_sort(t_ps *ps, uint8_t stack, uint32_t n)
 {
 	if (n <= 3)
 		return (ps_minisort(ps, stack, n));
-	else if (ps->stacks[stack].len <= 45)
+	else if (ps->stacks[stack].len <= 20)
 		return (ps_selectsort(ps, stack));
 	return (ps_quicksort(ps, stack, n));
 }
