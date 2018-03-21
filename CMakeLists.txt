@@ -4,7 +4,6 @@ cmake_policy(SET CMP0045 OLD)
 
 project(ps C)
 add_subdirectory(vendor/libft)
-add_subdirectory(vendor/librl)
 
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}
@@ -25,7 +24,7 @@ add_executable(checker ${ps_HDRS} include/ps.h
   src/stack.c)
 set_property(TARGET checker PROPERTY C_STANDARD 90)
 target_include_directories(checker PUBLIC include)
-target_link_libraries(checker PUBLIC debug ft debug rl)
+target_link_libraries(checker PUBLIC debug ft)
 
 target_compile_definitions(checker
   PRIVATE $<$<CONFIG:Debug>:DEBUG>$<$<CONFIG:Release>:NDEBUG>)

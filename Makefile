@@ -22,9 +22,9 @@ OBJ_DIR ?= obj
 OBJ_PATH ?= $(OBJ_DIR)/rel
 3TH_PATH = vendor
 
-LIBS = rl ft
-LIB_NAME = rl ft
-3TH_NAME = libft librl
+LIBS = ft
+LIB_NAME = ft
+3TH_NAME = libft
 SRCA_NAME = \
 	op.c ps.c stack.c opti.c quicksort.c selectsort.c sort.c checker.c
 SRCB_NAME = \
